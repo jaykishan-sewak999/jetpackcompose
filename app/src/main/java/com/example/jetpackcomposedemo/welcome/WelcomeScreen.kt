@@ -1,5 +1,6 @@
 package com.example.jetpackcomposedemo.welcome
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jetpackcomposedemo.R
@@ -76,23 +78,26 @@ fun WelcomeScreen(
             ) {
                 OutlinedButton(
                     onClick = { OnSignInClick() },
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = Color.Gray,
-                        containerColor = Color.LightGray
-                    )
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2EDC83),),
+                    border = BorderStroke(1.dp, color = Color.Black)
                 ) {
                     Text(text = "Sign In")
                 }
                 OutlinedButton(
                     onClick = { OnSignUpClick() },
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = Color.Gray,
-                        containerColor = Color.LightGray
-                    )
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2EDC83)),
+                    border = BorderStroke(width = 1.dp, color = Color.Black)
                 ) {
                     Text(text = "Sign Up")
                 }
             }
         }
+    }
+}
+@Preview
+@Composable
+fun PreViewWelcome(){
+    WelcomeScreen(OnSignInClick = { /*TODO*/ }) {
+        
     }
 }

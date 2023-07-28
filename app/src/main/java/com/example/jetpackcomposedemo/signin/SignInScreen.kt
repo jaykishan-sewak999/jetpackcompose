@@ -1,4 +1,4 @@
-package com.example.jetpackcomposedemo.ui.theme
+package com.example.jetpackcomposedemo.signin
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -33,7 +33,8 @@ import androidx.compose.ui.unit.dp
 import com.example.jetpackcomposedemo.R
 
 @Composable
-fun SignIn() {
+fun SignInScreen(OnSignInClicked: (email: String, password: String)  -> Unit) {
+
 
     var isChecked by remember { mutableStateOf(false) }
 
@@ -158,7 +159,11 @@ fun PasswordTextInput() {
     )
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-fun GreetingPreview() {
+fun PreviewSignIn(){
+    SignInScreen (OnSignInClicked = { email, password ->
+
+    })
 }
+
