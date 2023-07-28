@@ -40,7 +40,7 @@ import androidx.navigation.NavHostController
 import com.example.jetpackcomposedemo.R
 
 @Composable
-fun SignIn(navController: NavHostController) {
+fun SignIn() {
 
     var isChecked by remember{mutableStateOf(false)}
 
