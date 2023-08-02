@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -27,13 +28,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jetpackcomposedemo.R
+import com.example.jetpackcomposedemo.utils.EmailFieldState
+import com.example.jetpackcomposedemo.utils.PasswordFieldState
+import com.example.jetpackcomposedemo.utils.TextFieldState
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
-fun SignInScreen(OnSignInClicked: (email: String, password: String)  -> Unit) {
+fun SignInScreen(OnSignInClicked: (email: String, password: String) -> Unit) {
 
 
     var isChecked by remember { mutableStateOf(false) }
@@ -46,11 +52,20 @@ fun SignInScreen(OnSignInClicked: (email: String, password: String)  -> Unit) {
             .fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(painter = painterResource(id = R.drawable.logo), contentDescription = "logo")
+        Image(
+            painter = painterResource(id = R.drawable.user_placeholder),
+            contentDescription = "logo"
+        )
         Spacer(modifier = Modifier.height(15.dp))
-        EmailTextInput()
+        val emailState by remember { mutableStateOf(EmailFieldState()) }
+        val passwordState by remember {
+            mutableStateOf(PasswordFieldState())
+        }
+        //  var emailState: TextFieldState = remember { EmailTextInput() },
+
+        EmailTextInput(emailState)
         Spacer(modifier = Modifier.height(10.dp))
-        PasswordTextInput()
+        PasswordTextInput(passwordState)
         Spacer(modifier = Modifier.height(5.dp))
         Row(
             modifier = Modifier.align(Alignment.Start)
@@ -73,10 +88,9 @@ fun SignInScreen(OnSignInClicked: (email: String, password: String)  -> Unit) {
                 Text(text = "Save my login credentials", color = Color(0xFF979797))
             }
         }
-        Button(
-            onClick = {
 
-            },
+        Button(
+            onClick = { OnSignInClicked(emailState.text, "") },
             modifier = Modifier
                 .padding(1.dp),
             shape = RoundedCornerShape(15.dp),
@@ -87,14 +101,6 @@ fun SignInScreen(OnSignInClicked: (email: String, password: String)  -> Unit) {
             )
         }
         Spacer(modifier = Modifier.height(20.dp))
-        /*   Button(
-               onClick = { navController.navigate("signUp") },
-               modifier = Modifier
-                   .padding(1.dp)
-                   .fillMaxWidth()
-           ) {
-               Text(text = "Sign up")
-           }*/
     }
 
 }
@@ -102,14 +108,10 @@ fun SignInScreen(OnSignInClicked: (email: String, password: String)  -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailTextInput() {
-    var email by remember { mutableStateOf(TextFieldValue("")) }
-    var isEmailValid by remember { mutableStateOf(true) }
-    var isPasswordValid by remember { mutableStateOf(true) }
-    var emailErro by remember { mutableStateOf("Enter email") }
+fun EmailTextInput(emailState: TextFieldState = remember { EmailFieldState() }) {
 
     OutlinedTextField(
-        value = email,
+        value = emailState.text,
         modifier = Modifier.fillMaxWidth(),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             containerColor = Color(0xFFF6F6F6),
@@ -123,24 +125,34 @@ fun EmailTextInput() {
             )
         },
         onValueChange = { it ->
-            email = it
-            isEmailValid = isEmailValid(email.toString())
+            emailState.text = it
         },
         shape = RoundedCornerShape(5.dp),
-        isError = !isEmailValid
+        isError = emailState.showErrors()
     )
+    emailState.showError()?.let { error ->
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = error, style = TextStyle(
+                    color = Color.Red
+                )
+            )
+        }
+    }
 }
 
-fun isEmailValid(email: String): Boolean {
-    // Basic email format validation
-    return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordTextInput() {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
-    OutlinedTextField(value = text,
+fun PasswordTextInput(passwordFieldState: TextFieldState = remember {
+    PasswordFieldState()
+}) {
+
+    OutlinedTextField(value = passwordFieldState.text,
         modifier = Modifier.fillMaxWidth(),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             containerColor = Color(0xFFF6F6F6),
@@ -153,16 +165,27 @@ fun PasswordTextInput() {
                 color = Color(0xFFD9D9D9)
             )
         }, onValueChange = { it ->
-            text = it
+            passwordFieldState.text = it
         },
         shape = RoundedCornerShape(5.dp)
     )
+    passwordFieldState.showError()?.let {error ->
+        Row(modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Start) {
+            Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = error, style = TextStyle(
+                    color = Color.Red
+                )
+            )
+        }
+    }
 }
 
 @Preview
 @Composable
-fun PreviewSignIn(){
-    SignInScreen (OnSignInClicked = { email, password ->
+fun PreviewSignIn() {
+    SignInScreen(OnSignInClicked = { email, password ->
 
     })
 }
