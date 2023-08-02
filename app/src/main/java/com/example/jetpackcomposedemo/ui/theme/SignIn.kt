@@ -45,7 +45,7 @@ fun SignIn() {
             .fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(painter = painterResource(id = R.drawable.logo), contentDescription = "logo")
+        Image(painter = painterResource(id = R.drawable.user_placeholder), contentDescription = "logo")
         Spacer(modifier = Modifier.height(15.dp))
         EmailTextInput()
         Spacer(modifier = Modifier.height(10.dp))

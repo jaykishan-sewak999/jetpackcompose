@@ -9,6 +9,7 @@ import com.example.jetpackcomposedemo.Destinations.SIGN_IN
 import com.example.jetpackcomposedemo.Destinations.SIGN_UP
 import com.example.jetpackcomposedemo.Destinations.WELCOME_ROUTE
 import com.example.jetpackcomposedemo.signin.SignInRoute
+import com.example.jetpackcomposedemo.signup.SignUpRoute
 import com.example.jetpackcomposedemo.welcome.WelcomeRoute
 
 object Destinations {
@@ -32,7 +33,9 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
             })
         }
         composable(SIGN_UP){
-
+            SignUpRoute(SignUpClicked = {email, pass ->  
+                
+            })
         }
 
     }

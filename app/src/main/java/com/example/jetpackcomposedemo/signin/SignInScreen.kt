@@ -34,7 +34,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jetpackcomposedemo.R
 import com.example.jetpackcomposedemo.utils.EmailFieldState
+import com.example.jetpackcomposedemo.utils.PasswordFieldState
 import com.example.jetpackcomposedemo.utils.TextFieldState
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun SignInScreen(OnSignInClicked: (email: String, password: String) -> Unit) {
@@ -50,14 +52,20 @@ fun SignInScreen(OnSignInClicked: (email: String, password: String) -> Unit) {
             .fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(painter = painterResource(id = R.drawable.user_placeholder), contentDescription = "logo")
+        Image(
+            painter = painterResource(id = R.drawable.user_placeholder),
+            contentDescription = "logo"
+        )
         Spacer(modifier = Modifier.height(15.dp))
         val emailState by remember { mutableStateOf(EmailFieldState()) }
+        val passwordState by remember {
+            mutableStateOf(PasswordFieldState())
+        }
         //  var emailState: TextFieldState = remember { EmailTextInput() },
 
         EmailTextInput(emailState)
         Spacer(modifier = Modifier.height(10.dp))
-        PasswordTextInput()
+        PasswordTextInput(passwordState)
         Spacer(modifier = Modifier.height(5.dp))
         Row(
             modifier = Modifier.align(Alignment.Start)
@@ -82,7 +90,7 @@ fun SignInScreen(OnSignInClicked: (email: String, password: String) -> Unit) {
         }
 
         Button(
-            onClick = {OnSignInClicked(emailState.text,"")},
+            onClick = { OnSignInClicked(emailState.text, "") },
             modifier = Modifier
                 .padding(1.dp),
             shape = RoundedCornerShape(15.dp),
@@ -123,8 +131,10 @@ fun EmailTextInput(emailState: TextFieldState = remember { EmailFieldState() }) 
         isError = emailState.showErrors()
     )
     emailState.showError()?.let { error ->
-        Row(horizontalArrangement = Arrangement.Start,
-        modifier = Modifier.fillMaxWidth()) {
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = error, style = TextStyle(
@@ -138,9 +148,11 @@ fun EmailTextInput(emailState: TextFieldState = remember { EmailFieldState() }) 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordTextInput() {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
-    OutlinedTextField(value = text,
+fun PasswordTextInput(passwordFieldState: TextFieldState = remember {
+    PasswordFieldState()
+}) {
+
+    OutlinedTextField(value = passwordFieldState.text,
         modifier = Modifier.fillMaxWidth(),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             containerColor = Color(0xFFF6F6F6),
@@ -153,10 +165,21 @@ fun PasswordTextInput() {
                 color = Color(0xFFD9D9D9)
             )
         }, onValueChange = { it ->
-            text = it
+            passwordFieldState.text = it
         },
         shape = RoundedCornerShape(5.dp)
     )
+    passwordFieldState.showError()?.let {error ->
+        Row(modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Start) {
+            Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = error, style = TextStyle(
+                    color = Color.Red
+                )
+            )
+        }
+    }
 }
 
 @Preview

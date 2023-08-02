@@ -1,16 +1,6 @@
 package com.example.jetpackcomposedemo.utils
 
-open class EmailFieldState(
-    email: String? = null,
-) : TextFieldState(validator = ::isEmailValid, errorFor = ::inValidEmailError) {
-
-    init {
-        email?.let {
-            text = it
-        }
-    }
-
-}
+open class EmailFieldState: TextFieldState(validator = ::isEmailValid, errorFor = ::inValidEmailError)
 
 fun isEmailValid(email: String?): Boolean {
     return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
