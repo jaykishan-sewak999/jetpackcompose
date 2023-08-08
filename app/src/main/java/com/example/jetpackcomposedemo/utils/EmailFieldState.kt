@@ -6,6 +6,6 @@ fun isEmailValid(email: String?): Boolean {
     return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
 }
 
-fun inValidEmailError(email: String?): String {
-    return "Invalid email $email"
+fun inValidEmailError(): String {
+    return "Invalid email"
 }

@@ -93,6 +93,7 @@ fun SignInScreen(OnSignInClicked: (email: String, password: String) -> Unit) {
             onClick = { OnSignInClicked(emailState.text, "") },
             modifier = Modifier
                 .padding(1.dp),
+            enabled = emailState.isValid && passwordState.isValid,
             shape = RoundedCornerShape(15.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2EDC83))
         ) {
@@ -124,7 +125,7 @@ fun EmailTextInput(emailState: TextFieldState = remember { EmailFieldState() }) 
                 color = Color(0xFFD9D9D9)
             )
         },
-        onValueChange = { it ->
+        onValueChange = {
             emailState.text = it
         },
         shape = RoundedCornerShape(5.dp),
