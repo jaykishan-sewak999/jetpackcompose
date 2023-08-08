@@ -24,6 +24,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +38,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jetpackcomposedemo.R
+import com.example.jetpackcomposedemo.signin.EmailTextInput
+import com.example.jetpackcomposedemo.signin.PasswordTextInput
+import com.example.jetpackcomposedemo.utils.ConfirmPasswordState
+import com.example.jetpackcomposedemo.utils.EmailFieldState
+import com.example.jetpackcomposedemo.utils.PasswordFieldState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -89,53 +97,24 @@ fun SignUpScreen(SignUpClicked: (String, String) -> Unit) {
                     Text("Email",
                         style = TextStyle(fontSize = 18.sp)
                     )
-                    OutlinedTextField(
-                        value = "", onValueChange = {},
-                        shape = RoundedCornerShape(5.dp),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            containerColor = Color(0xFFEAEAEA),
-                            focusedBorderColor = Color(0xFFEAEAEA),
-                            unfocusedBorderColor = Color(0xFFEAEAEA),
-                        ),
-                        label = {
-                            Text("Your Email")
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    )
+
+                    val emailState by remember { mutableStateOf(EmailFieldState()) }
+                    val passwordState by remember { mutableStateOf(PasswordFieldState()) }
+                    val confirmPasswordFieldState by remember { mutableStateOf(ConfirmPasswordState(passwordFieldState = passwordState)) }
+
+                    //val emailState by remember { mutableStateOf(EmailFieldState()) }
+
+                    EmailTextInput(emailState)
                     Spacer(modifier = Modifier.height(10.dp))
                     Text("Password",
                         style = TextStyle(fontSize = 18.sp)
                     )
-                    OutlinedTextField(
-                        value = "", onValueChange = {},
-                        shape = RoundedCornerShape(5.dp),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            containerColor = Color(0xFFEAEAEA),
-                            focusedBorderColor = Color(0xFFEAEAEA),
-                            unfocusedBorderColor = Color(0xFFEAEAEA),
-                        ),
-                        label = {
-                            Text("Enter password")
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    PasswordTextInput(passwordState)
                     Spacer(modifier = Modifier.height(10.dp))
                     Text("Confirm Password",
                         style = TextStyle(fontSize = 18.sp)
                     )
-                    OutlinedTextField(
-                        value = "", onValueChange = {},
-                        shape = RoundedCornerShape(5.dp),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            containerColor = Color(0xFFEAEAEA),
-                            focusedBorderColor = Color(0xFFEAEAEA),
-                            unfocusedBorderColor = Color(0xFFEAEAEA),
-                        ),
-                        label = {
-                            Text("Enter confirm password")
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    PasswordTextInput(confirmPasswordFieldState)
                     Spacer(modifier = Modifier.height(10.dp))
                     Button(onClick = { /*TODO*/ },
                         modifier = Modifier.fillMaxWidth()) {
