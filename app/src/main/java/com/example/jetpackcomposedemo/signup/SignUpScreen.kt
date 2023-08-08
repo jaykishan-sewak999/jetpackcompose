@@ -100,7 +100,7 @@ fun SignUpScreen(SignUpClicked: (String, String) -> Unit) {
 
                     val emailState by remember { mutableStateOf(EmailFieldState()) }
                     val passwordState by remember { mutableStateOf(PasswordFieldState()) }
-                    val confirmPasswordFieldState by remember { mutableStateOf(ConfirmPasswordState(passwordState)) }
+                    val confirmPasswordFieldState by remember { mutableStateOf(ConfirmPasswordState(passwordFieldState = passwordState)) }
 
                     //val emailState by remember { mutableStateOf(EmailFieldState()) }
 

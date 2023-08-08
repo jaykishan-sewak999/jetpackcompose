@@ -4,11 +4,11 @@ class PasswordFieldState: TextFieldState(validator = ::isPasswordValid, errorFor
 
 class ConfirmPasswordState(private val passwordFieldState: PasswordFieldState) : TextFieldState(validator = ::isPasswordValid, errorFor = ::passwordValidationError){
 
-    override val isValid: Boolean
+    override val isValid
         get() = validateConfirmPassword(passwordFieldState.text,text)
 
     override fun showError(): String? {
-        return if (showErrors()){
+        return if (text.length >2 ){
             inValidConfirmPassword()
         } else{
             null
@@ -23,8 +23,8 @@ fun isPasswordValid(password: String): Boolean{
 private fun passwordValidationError(): String {
     return "Invalid password"
 }
-private fun validateConfirmPassword(confirmPassword: String, password: String): Boolean {
-    return (isPasswordValid(confirmPassword) && confirmPassword == password)
+private fun validateConfirmPassword(password: String, confirmPassword: String): Boolean {
+    return (isPasswordValid(password) && confirmPassword == password)
 }
 
 private fun inValidConfirmPassword(): String{
