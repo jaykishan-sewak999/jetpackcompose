@@ -1,6 +1,5 @@
 package com.example.jetpackcomposedemo.signup
 
-import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -116,8 +115,10 @@ fun SignUpScreen(SignUpClicked: (String, String) -> Unit) {
                     )
                     PasswordTextInput(confirmPasswordFieldState)
                     Spacer(modifier = Modifier.height(10.dp))
-                    Button(onClick = { /*TODO*/ },
-                        modifier = Modifier.fillMaxWidth()) {
+                    Button(onClick = { SignUpClicked(emailState.text, passwordState.text)},
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = emailState.isValid && passwordState.isValid && confirmPasswordFieldState.isValid
+                    ) {
                         Text(text = "Sign up",)
                     }
                 }
