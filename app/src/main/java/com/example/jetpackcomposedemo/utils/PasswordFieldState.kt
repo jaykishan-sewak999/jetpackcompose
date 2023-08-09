@@ -8,7 +8,7 @@ class ConfirmPasswordState(private val passwordFieldState: PasswordFieldState) :
         get() = validateConfirmPassword(passwordFieldState.text,text)
 
     override fun showError(): String? {
-        return if (text.length >2 ){
+        return if (text.length >2 && !validateConfirmPassword(passwordFieldState.text,text)){
             inValidConfirmPassword()
         } else{
             null
@@ -24,7 +24,7 @@ private fun passwordValidationError(): String {
     return "Invalid password"
 }
 private fun validateConfirmPassword(password: String, confirmPassword: String): Boolean {
-    return (isPasswordValid(password) && confirmPassword == password)
+    return (isPasswordValid(confirmPassword) && confirmPassword == password)
 }
 
 private fun inValidConfirmPassword(): String{
