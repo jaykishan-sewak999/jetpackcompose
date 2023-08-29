@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 class SignInViewModel(val userRepository: UserRepository) : ViewModel() {
 
     var loginResponse: LoginResponse by mutableStateOf(LoginResponse(""))
-    var errorMessage: String by mutableStateOf("")
     var isLoading: Boolean by mutableStateOf(false)
 
         fun doLogin(){
@@ -31,7 +30,6 @@ class SignInViewModel(val userRepository: UserRepository) : ViewModel() {
                 isLoading = false
                 loginResponse.isSuccess = false
                 loginResponse.message = exception.message
-
             }
         }
     }

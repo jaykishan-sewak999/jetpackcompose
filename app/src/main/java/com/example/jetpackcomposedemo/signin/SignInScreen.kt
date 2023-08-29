@@ -92,7 +92,6 @@ fun SignInScreen(OnSignInClicked: (email: String, password: String) -> Unit) {
 
         Button(
             onClick = {
-                signUpViewModel.isLoading = true
                 signUpViewModel.doLogin()
                 if (signUpViewModel.loginResponse.isSuccess == true)
                     OnSignInClicked(emailState.text, "")
@@ -103,11 +102,9 @@ fun SignInScreen(OnSignInClicked: (email: String, password: String) -> Unit) {
             shape = RoundedCornerShape(15.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2EDC83))
         ) {
-            if(signUpViewModel.isLoading){
+            if (signUpViewModel.isLoading) {
                 CircularProgressIndicator(color = Color.Cyan)
-            }
-            else
-            {
+            } else {
                 Text(
                     text = "Login",
                 )
