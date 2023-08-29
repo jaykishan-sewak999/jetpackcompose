@@ -97,10 +97,10 @@ fun SignInScreen(OnSignInClicked: (email: String, password: String) -> Unit) {
                     OnSignInClicked(emailState.text, "")
             },
             modifier = Modifier
-                .padding(1.dp),
+                .padding(1.dp).height(50.dp),
             enabled = emailState.isValid && passwordState.isValid,
             shape = RoundedCornerShape(15.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2EDC83))
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2EDC83)),
         ) {
             if (signUpViewModel.isLoading) {
                 CircularProgressIndicator(color = Color.Cyan)
