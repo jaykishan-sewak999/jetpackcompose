@@ -2,7 +2,9 @@ package com.example.jetpackcomposedemo.signin
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -15,10 +17,22 @@ class SignInViewModel(val userRepository: UserRepository) : ViewModel() {
 
     var loginResponse: LoginResponse by mutableStateOf(LoginResponse(""))
     var errorMessage: String by mutableStateOf("")
+    var isLoading: Boolean by mutableStateOf(false)
 
-    fun doLogin(){
+        fun doLogin(){
+            isLoading = true
         viewModelScope.launch {
-            loginResponse = userRepository.doLogin(User("test@test.com","123456"))
+            try {
+                loginResponse = userRepository.doLogin(User("test@test.com","123456"))
+                loginResponse.isSuccess = true
+                isLoading = false
+            }
+            catch (exception: Exception){
+                isLoading = false
+                loginResponse.isSuccess = false
+                loginResponse.message = exception.message
+
+            }
         }
     }
 }

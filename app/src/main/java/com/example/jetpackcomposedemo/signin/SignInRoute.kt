@@ -4,7 +4,5 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun SignInRoute(OnSignInClicked :(String, String) -> Unit){
-    SignInScreen(OnSignInClicked = {
-        email, password ->  OnSignInClicked(email, password)
-    })
+    SignInScreen(OnSignInClicked = OnSignInClicked)
 }
