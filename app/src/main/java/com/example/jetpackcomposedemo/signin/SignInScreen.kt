@@ -200,7 +200,7 @@ fun PasswordTextInput(
 @Preview
 @Composable
 fun PreviewSignIn() {
-    SignInScreen(OnSignInClicked = { email, password ->
+    SignInScreen(OnSignInClicked = { _, _ ->
 
     })
 }
