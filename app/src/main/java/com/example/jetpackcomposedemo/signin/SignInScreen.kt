@@ -15,6 +15,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -29,14 +30,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.jetpackcomposedemo.R
 import com.example.jetpackcomposedemo.utils.EmailFieldState
 import com.example.jetpackcomposedemo.utils.PasswordFieldState
 import com.example.jetpackcomposedemo.utils.TextFieldState
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun SignInScreen(OnSignInClicked: (email: String, password: String) -> Unit) {
@@ -88,18 +88,28 @@ fun SignInScreen(OnSignInClicked: (email: String, password: String) -> Unit) {
                 Text(text = "Save my login credentials", color = Color(0xFF979797))
             }
         }
+        val signUpViewModel: SignInViewModel = viewModel(factory = SignInViewModelFactory())
 
         Button(
-            onClick = { OnSignInClicked(emailState.text, "") },
+            onClick = {
+                signUpViewModel.doLogin()
+                if (signUpViewModel.loginResponse.isSuccess == true)
+                    OnSignInClicked(emailState.text, "")
+            },
             modifier = Modifier
-                .padding(1.dp),
+                .padding(1.dp).height(50.dp),
             enabled = emailState.isValid && passwordState.isValid,
             shape = RoundedCornerShape(15.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2EDC83))
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2EDC83)),
         ) {
-            Text(
-                text = "Login",
-            )
+            if (signUpViewModel.isLoading) {
+                CircularProgressIndicator(color = Color.Cyan)
+            } else {
+                Text(
+                    text = "Login",
+                )
+            }
+
         }
         Spacer(modifier = Modifier.height(20.dp))
     }
@@ -149,9 +159,11 @@ fun EmailTextInput(emailState: TextFieldState = remember { EmailFieldState() }) 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordTextInput(passwordFieldState: TextFieldState = remember {
-    PasswordFieldState()
-}) {
+fun PasswordTextInput(
+    passwordFieldState: TextFieldState = remember {
+        PasswordFieldState()
+    }
+) {
 
     OutlinedTextField(value = passwordFieldState.text,
         modifier = Modifier.fillMaxWidth(),
@@ -170,9 +182,11 @@ fun PasswordTextInput(passwordFieldState: TextFieldState = remember {
         },
         shape = RoundedCornerShape(5.dp)
     )
-    passwordFieldState.showError()?.let {error ->
-        Row(modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Start) {
+    passwordFieldState.showError()?.let { error ->
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start
+        ) {
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = error, style = TextStyle(
@@ -186,7 +200,7 @@ fun PasswordTextInput(passwordFieldState: TextFieldState = remember {
 @Preview
 @Composable
 fun PreviewSignIn() {
-    SignInScreen(OnSignInClicked = { email, password ->
+    SignInScreen(OnSignInClicked = { _, _ ->
 
     })
 }
