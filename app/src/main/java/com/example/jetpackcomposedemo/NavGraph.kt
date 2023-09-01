@@ -33,6 +33,9 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
         composable(SIGN_IN) {
             SignInRoute(OnSignInClicked = { email, password ->
                 navController.navigate("dashboard/$email")
+            },
+            OnSkipClicked = {
+                navController.navigate("dashboard/Guest")
             })
         }
         composable(SIGN_UP){

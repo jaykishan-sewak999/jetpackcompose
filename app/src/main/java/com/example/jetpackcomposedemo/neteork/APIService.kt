@@ -6,6 +6,7 @@ import retrofit2.http.POST
 
 
 private const val END_URL_LOGIN_WITH_EMAIL = "login_success"
+private const val END_URL_EMPLOYEE_LIST = "employees"
 
 interface APIService {
 
