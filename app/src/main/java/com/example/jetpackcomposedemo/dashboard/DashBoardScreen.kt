@@ -16,15 +16,24 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun DashBoardScreen(message: String) {
-    Column(verticalArrangement = Arrangement.Center,
-    modifier = Modifier
-        .fillMaxWidth()
-        .fillMaxHeight(),
-    horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = "Welcome\n$message",
-        style = TextStyle(fontSize = 22.sp, color = Color.Green,
-            textAlign = TextAlign.Center,
-        fontWeight = FontWeight.W700)
-        )
+    if (message.contains("guest", ignoreCase = true)) {
+
+    } else {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Welcome\n$message",
+                style = TextStyle(
+                    fontSize = 22.sp, color = Color.Green,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.W700
+                )
+            )
+        }
     }
 }

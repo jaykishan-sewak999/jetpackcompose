@@ -39,7 +39,10 @@ import com.example.jetpackcomposedemo.utils.PasswordFieldState
 import com.example.jetpackcomposedemo.utils.TextFieldState
 
 @Composable
-fun SignInScreen(OnSignInClicked: (email: String, password: String) -> Unit) {
+fun SignInScreen(
+    OnSignInClicked: (email: String, password: String) -> Unit,
+    OnSkipClicked: () -> Unit
+) {
 
 
     var isChecked by remember { mutableStateOf(false) }
@@ -97,7 +100,8 @@ fun SignInScreen(OnSignInClicked: (email: String, password: String) -> Unit) {
                     OnSignInClicked(emailState.text, "")
             },
             modifier = Modifier
-                .padding(1.dp).height(50.dp),
+                .padding(1.dp)
+                .height(50.dp),
             enabled = emailState.isValid && passwordState.isValid,
             shape = RoundedCornerShape(15.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2EDC83)),
@@ -112,6 +116,17 @@ fun SignInScreen(OnSignInClicked: (email: String, password: String) -> Unit) {
 
         }
         Spacer(modifier = Modifier.height(20.dp))
+        Row(
+            modifier = Modifier.align(Alignment.End)
+        ) {
+            // The button is positioned to the left of the layout
+            Button(onClick = { OnSkipClicked() }) {
+                Text(
+                    text = "Skip",
+                    color = Color(0xFF979797),
+                )
+            }
+        }
     }
 
 }
@@ -201,6 +216,9 @@ fun PasswordTextInput(
 @Composable
 fun PreviewSignIn() {
     SignInScreen(OnSignInClicked = { _, _ ->
+
+    },
+    OnSkipClicked = {
 
     })
 }
