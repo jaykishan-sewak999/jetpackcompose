@@ -1,5 +1,6 @@
 package com.example.jetpackcomposedemo.signin
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -92,12 +94,12 @@ fun SignInScreen(
             }
         }
         val signUpViewModel: SignInViewModel = viewModel(factory = SignInViewModelFactory())
+        val context = LocalContext.current
 
         Button(
             onClick = {
                 signUpViewModel.doLogin()
-                if (signUpViewModel.loginResponse.isSuccess == true)
-                    OnSignInClicked(emailState.text, "")
+
             },
             modifier = Modifier
                 .padding(1.dp)
@@ -115,6 +117,18 @@ fun SignInScreen(
             }
 
         }
+        if (signUpViewModel.state != 0){
+            if (signUpViewModel.loginResponse.isSuccess == true){
+                OnSignInClicked(emailState.text, "")
+                Toast.makeText(context," Success",Toast.LENGTH_LONG).show()
+                signUpViewModel.state = 0
+            }
+            else{
+                Toast.makeText(context," Fail",Toast.LENGTH_LONG).show()
+                signUpViewModel.state = 0
+            }
+        }
+
         Spacer(modifier = Modifier.height(20.dp))
         Row(
             modifier = Modifier.align(Alignment.End)
